@@ -1,3 +1,6 @@
+# Employee-management-API
+Employee-management-API with java and spring boot
+
 # Employee Management API
 
 A learning project for practicing Java, Spring Boot, REST API design, validation, and persistence. Build and understand each feature yourself before presenting this project as portfolio work.
