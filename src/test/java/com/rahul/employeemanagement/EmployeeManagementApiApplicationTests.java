@@ -124,4 +124,39 @@ class EmployeeManagementApiApplicationTests {
         mockMvc.perform(get("/api/employees/" + id))
                 .andExpect(status().isNotFound());
     }
+
+    
+@Test
+void createEmployeeRejectsBlankFirstName() throws Exception {
+    String request = objectMapper.writeValueAsString(
+            new EmployeePayload(
+                    " ",
+                    "Asapu",
+                    "rahul.blank@example.com",
+                    "Engineering",
+                    "Java Developer"
+            )
+    );
+
+    mockMvc.perform(post("/api/employees")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(request))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status").value(400))
+            .andExpect(jsonPath("$.message").exists());
+}
+
+@Test
+void createEmployeeRejectsInvalidEmail() throws Exception {
+    mockMvc.perform(post("/api/employees")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(employeeJson(
+                            "not-an-email",
+                            "Engineering"
+                    )))
+            .andExpect(status().isBadRequest())
+            .andExpect(jsonPath("$.status").value(400))
+            .andExpect(jsonPath("$.message").exists());
+}
+
 }
